@@ -29,6 +29,23 @@ app.get("/", (req, res) => {
     });
 });
 
+app.get("/filter", (req, res) => {
+    let queries = {};
+
+    if (req.query.progress) {
+        queries.progress_level = req.query.progress;
+    }
+
+    let data = {};
+    data.where = queries;
+
+    Task.findAll(data).then((result) => {
+        res.send(result);
+    }).catch((err) => {
+        res.status(500).send(err);
+    });
+});
+
 app.post("/", (req, res) => {
     Task.create(req.body).then((result) => {
         res.status(200).send(result);
